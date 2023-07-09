@@ -112,3 +112,20 @@ void move_star(Item *ptr, bool *status, int max_x, int max_y)
 		draw_star(ptr);
 	}
 }
+
+void blink_snake(Item *f)
+{
+	if(f) {
+		move(f->y, f->x);
+		if(f->head) {
+			attrset(COLOR_PAIR(1) | A_BLINK);
+			addch('*');
+			attrset(COLOR_PAIR(0));
+		} else {	
+			attrset(COLOR_PAIR(2) | A_BLINK);
+			addch('*');
+			attrset(COLOR_PAIR(0));
+		}
+		blink_snake(f->next);
+	}
+}

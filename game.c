@@ -90,6 +90,7 @@ void init_game()
 	curs_set(0);
 	noecho();
 }
+
 static void add_item(Item *f, Item *l)
 {
 	Item *tmp;
@@ -103,6 +104,7 @@ static void add_item(Item *f, Item *l)
 	tmp->next = NULL;
 	l->next = tmp;
 }
+
 int main()
 {
 	int row, col, key, score;
@@ -135,6 +137,8 @@ int main()
 			set_direction(first, key);
 		}
 	}
+	blink_snake(first);
+	sleep(5);
 	endwin();
 	return 0;
 }
