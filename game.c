@@ -9,9 +9,11 @@
 enum { delay_duration = 100 };
 enum { key_escape = 27 };
 
-void show_score() {
+void show_score(int n) {
 	char message[] = "Score: ";
-	
+	move(0, 10);
+	addstr(message);
+	printw("%d", n);
 }
 
 void draw_walls(int max_x, int max_y)
@@ -55,7 +57,7 @@ void gen_food(Food *f, int max_x, int max_y) {
 		hide_food(f);
 	char sym = '@';
 	int x = rand() % max_x;
-	int y = rand() % max_y;
+	int y = rand() % max_y + 1;
 	f->x = x;
 	f->y = y;
 	move(f->y, f->x);
@@ -73,20 +75,39 @@ void init_game()
 	curs_set(0);
 	noecho();
 }
-
+static void add_item(Item *f, Item *l)
+{
+	Item *tmp;
+	tmp = malloc(sizeof(Item));
+	tmp->x = l->x - l->dx;
+	tmp->y = l->y - l->dy;
+	tmp->cur_dir = l->cur_dir;
+	tmp->dx = l->dx;
+	tmp->dy = l->dy;
+	tmp->prev = l;
+	tmp->next = NULL;
+	l->next = tmp;
+}
 int main()
 {
-	int row, col, key;
+	int row, col, key, score;
+	score = 0;
 	bool status = true;
 	Item *first = malloc(sizeof(Item));
 	Item *last = first;
 	Food *f = malloc(sizeof(Food));
 	init_game();
+	show_score(score);
 	getmaxyx(stdscr, row, col);
 	draw_walls(col, row);
 	gen_food(f, col, row);
 	init_snake(first, col, row);
 	while((key = getch()) != key_escape) {
+		if(f->x == first->x && f->y == first->y) {
+			score++;
+			show_score(score);
+			gen_food(f, col, row);
+		}
 		if(!status) {
 			break;
 		}

@@ -10,6 +10,7 @@ static void draw_star(Item *first)
 		move(first->y, first->x);
 		addch(sn_char);
 		refresh();
+		draw_star(first->next);
 	}
 }
 
@@ -19,7 +20,7 @@ static void hide_star(Item *ptr)
 	addch(' ');
 	refresh();
 }
-Item* add_item(Item *first, Item *last)
+/*void add_item(Item *first, Item *last)
 {
 	Item *tmp;
 	tmp = malloc(sizeof(Item));
@@ -28,8 +29,7 @@ Item* add_item(Item *first, Item *last)
 	tmp->prev = last;
 	tmp->next = NULL;
 	last->next = tmp;
-	return tmp;
-}
+}*/
 
 void init_snake(Item *first,int max_x, int max_y)
 {
