@@ -33,24 +33,49 @@ void init_snake(Item *first,int max_x, int max_y)
 
 void set_direction(Item *ptr, int key)
 {
+	/*
+	if(key == KEY_UP) {
+				
+		ptr->dx = 0;
+		ptr->dy = -1;
+		ptr->cur_dir = up;
+	}
+	if(key == KEY_DOWN) {
+		
+	}
+	*/
+	
 	switch(key) {
 		case KEY_UP:
-			ptr->dx = 0;
-			ptr->dy = -1;
+			if(ptr->cur_dir != down) {	
+				ptr->dx = 0;
+				ptr->dy = -1;
+				ptr->cur_dir = up;
+			}
 			break;
 		case KEY_DOWN:
-			ptr->dx = 0;
-			ptr->dy = 1;
+			if(ptr->cur_dir != up) {
+				ptr->dx = 0;
+				ptr->dy = 1;
+				ptr->cur_dir = down;
+			}
 			break;
 		case KEY_LEFT:
-			ptr->dx = -1;
-			ptr->dy = 0;
+			if(ptr->cur_dir != right) {
+				ptr->dx = -1;
+				ptr->dy = 0;
+				ptr->cur_dir = left;
+			}
 			break;
 		case KEY_RIGHT:
-			ptr->dx = 1;
-			ptr->dy = 0;
+			if(ptr->cur_dir != left) {
+				ptr->dx = 1;
+				ptr->dy = 0;
+				ptr->cur_dir = right;
+			}
 			break;
 	}
+	
 	//ptr->dx = x;
 	//ptr->dy = y;
 }
