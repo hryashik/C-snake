@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include "item-type.h"
+#include "types.h"
 #include <ncurses.h>
+#include <stdlib.h>
 
 static void draw_star(Item *first)
 {
@@ -18,6 +19,17 @@ static void hide_star(Item *ptr)
 	addch(' ');
 	refresh();
 }
+Item* add_item(Item *first, Item *last)
+{
+	Item *tmp;
+	tmp = malloc(sizeof(Item));
+	tmp->x = last->x - last->dx;
+	tmp->y = last->y - last->dy;
+	tmp->prev = last;
+	tmp->next = NULL;
+	last->next = tmp;
+	return tmp;
+}
 
 void init_snake(Item *first,int max_x, int max_y)
 {
@@ -32,19 +44,7 @@ void init_snake(Item *first,int max_x, int max_y)
 }
 
 void set_direction(Item *ptr, int key)
-{
-	/*
-	if(key == KEY_UP) {
-				
-		ptr->dx = 0;
-		ptr->dy = -1;
-		ptr->cur_dir = up;
-	}
-	if(key == KEY_DOWN) {
-		
-	}
-	*/
-	
+{	
 	switch(key) {
 		case KEY_UP:
 			if(ptr->cur_dir != down) {	
@@ -80,10 +80,17 @@ void set_direction(Item *ptr, int key)
 	//ptr->dy = y;
 }
 
-void move_star(Item *ptr, int max_x, int max_y)
+void move_star(Item *ptr, bool *status, int max_x, int max_y)
 {
 	hide_star(ptr);
 	ptr->x += ptr->dx;
 	ptr->y += ptr->dy;
+	if (ptr->x > (max_x - 2) || ptr->x < 1) {	
+		*status = false;
+		return;
+	} else if (ptr->y > (max_y - 2) || ptr->y < 2) {
+		*status = false;
+		return;
+	}
 	draw_star(ptr);
 }
