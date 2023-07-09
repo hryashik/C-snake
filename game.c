@@ -12,6 +12,7 @@ void init_game()
 {
 	initscr();
 	cbreak();
+	timeout(delay_duration);
 	keypad(stdscr, 1);
 	curs_set(0);
 	noecho();
@@ -21,18 +22,11 @@ int main()
 {
 	int row, col, key;
 	Item *first = malloc(sizeof(Item));
-	initscr();
-	cbreak();
-	timeout(delay_duration);
-	keypad(stdscr, 1);
-	noecho();
-	curs_set(0);
+	init_game();
 	getmaxyx(stdscr, row, col);
-	first->x = col/2;
-	first->y = row/2;
-	set_direction(first, 0, 0);
+	init_snake(first, col, row);
 	while((key = getch()) != key_escape) {
-		switch(key) {
+	/*	switch(key) {
 			case KEY_UP:
 				set_direction(first, 0, -1);
 				break;
@@ -46,8 +40,13 @@ int main()
 				set_direction(first, 1, 0);
 				break;
 			case ERR:
-				move_star(first);
+				move_star(first, col, row);
 				break;
+		} */
+		if (key == ERR) {
+			move_star(first, col, row);
+		} else {
+			set_direction(first, key);
 		}
 	}
 	endwin();

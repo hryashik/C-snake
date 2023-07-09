@@ -1,3 +1,3 @@
-void init_snake(Item*);
-void move_star(Item*);
-void set_direction(Item*, int, int);
+void init_snake(Item*, int, int);
+void move_star(Item*, int, int);
+void set_direction(Item*, int);
