@@ -9,7 +9,15 @@ static void draw_star(Item *first)
 	if (first) {	
 		char sn_char = '*';
 		move(first->y, first->x);
-		addch(sn_char);
+		if(first->head) {
+			attrset(COLOR_PAIR(1));
+			addch(sn_char | A_BOLD);
+			attrset(COLOR_PAIR(0));
+		} else {
+			attrset(COLOR_PAIR(2));
+			addch(sn_char | A_BOLD);
+			attrset(COLOR_PAIR(0));
+		}
 		refresh();
 		draw_star(first->next);
 	}
@@ -21,16 +29,6 @@ static void hide_star(Item *ptr)
 	addch(' ');
 	refresh();
 }
-/*void add_item(Item *first, Item *last)
-{
-	Item *tmp;
-	tmp = malloc(sizeof(Item));
-	tmp->x = last->x - last->dx;
-	tmp->y = last->y - last->dy;
-	tmp->prev = last;
-	tmp->next = NULL;
-	last->next = tmp;
-}*/
 
 void init_snake(Item *first,int max_x, int max_y)
 {
@@ -76,9 +74,6 @@ void set_direction(Item *ptr, int key)
 			}
 			break;
 	}
-	
-	//ptr->dx = x;
-	//ptr->dy = y;
 }
 
 void move_star(Item *ptr, bool *status, int max_x, int max_y)
@@ -102,16 +97,4 @@ void move_star(Item *ptr, bool *status, int max_x, int max_y)
 		move_star(ptr->prev, status, max_x, max_y);
 		draw_star(ptr);
 	}
-	/*
-	hide_star(ptr);
-	ptr->x += ptr->dx;
-	ptr->y += ptr->dy;
-	if (ptr->x > (max_x - 2) || ptr->x < 1) {	
-		*status = false;
-		return;
-	} else if (ptr->y > (max_y - 2) || ptr->y < 2) {
-		*status = false;
-		return;
-	}
-	draw_star(ptr);*/
 }

@@ -12,7 +12,9 @@ enum { key_escape = 27 };
 void show_score(int n) {
 	char message[] = "Score: ";
 	move(0, 10);
+	attrset(COLOR_PAIR(1) | A_BOLD);
 	addstr(message);
+	attrset(COLOR_PAIR(0));
 	printw("%d", n);
 }
 
@@ -20,6 +22,7 @@ void draw_walls(int max_x, int max_y)
 {
 	int x, y, i;
 	i = 0;
+	attrset(COLOR_PAIR(4) | A_BOLD);
 	while(i < max_x) {
 		move(1, i);
 		addch('-');
@@ -43,6 +46,7 @@ void draw_walls(int max_x, int max_y)
 		addch('|');
 		i++;
 	}
+	attrset(COLOR_PAIR(0));
 }
 
 void hide_food(Food *f) 
@@ -56,12 +60,14 @@ void gen_food(Food *f, int max_x, int max_y) {
 	if(f->x && f->y)
 		hide_food(f);
 	char sym = '@';
-	int x = rand() % max_x;
-	int y = rand() % max_y + 1;
-	f->x = x;
-	f->y = y;
+	int x = rand() % (max_x - 2);
+	int y = rand() % (max_y - 2);
+	f->x = x + 1;
+	f->y = y + 2;
 	move(f->y, f->x);
+	attrset(COLOR_PAIR(3) | A_BOLD);
 	addch(sym);
+	attrset(COLOR_PAIR(0));
 	refresh();
 }
 
@@ -69,6 +75,11 @@ void init_game()
 {
 	srand(time(NULL));
 	initscr();
+	start_color();
+	init_pair(1, COLOR_RED, COLOR_BLACK);
+	init_pair(2, COLOR_GREEN, COLOR_BLACK);
+	init_pair(3, COLOR_YELLOW, COLOR_BLACK);
+	init_pair(4, COLOR_CYAN, COLOR_BLACK);
 	cbreak();
 	timeout(delay_duration);
 	keypad(stdscr, 1);
