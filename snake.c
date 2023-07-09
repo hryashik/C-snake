@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "types.h"
 #include <ncurses.h>
 #include <stdlib.h>
@@ -39,8 +40,8 @@ void init_snake(Item *first,int max_x, int max_y)
 	first->dy = 0;
 	first->prev = NULL;
 	first->next = NULL;
+	first->head = true;
 	first->cur_dir = left;
-	draw_star(first);
 }
 
 void set_direction(Item *ptr, int key)
@@ -82,6 +83,26 @@ void set_direction(Item *ptr, int key)
 
 void move_star(Item *ptr, bool *status, int max_x, int max_y)
 {
+	if(ptr) {
+		hide_star(ptr);
+		if(ptr->head) {
+			ptr->x += ptr->dx;
+			ptr->y += ptr->dy;
+			if (ptr->x > (max_x - 2) || ptr->x < 1) {	
+				*status = false;
+				return;
+			} else if (ptr->y > (max_y - 2) || ptr->y < 2) {
+				*status = false;
+				return;
+			}
+		} else {
+			ptr->x = ptr->prev->x;
+			ptr->y = ptr->prev->y;
+		}
+		move_star(ptr->prev, status, max_x, max_y);
+		draw_star(ptr);
+	}
+	/*
 	hide_star(ptr);
 	ptr->x += ptr->dx;
 	ptr->y += ptr->dy;
@@ -92,5 +113,5 @@ void move_star(Item *ptr, bool *status, int max_x, int max_y)
 		*status = false;
 		return;
 	}
-	draw_star(ptr);
+	draw_star(ptr);*/
 }

@@ -107,12 +107,15 @@ int main()
 			score++;
 			show_score(score);
 			gen_food(f, col, row);
+			add_item(first, last);
+			last = last->next;
 		}
 		if(!status) {
 			break;
 		}
+		
 		if (key == ERR) {
-			move_star(first, &status, col, row);
+			move_star(last, &status, col, row);
 		} else {
 			set_direction(first, key);
 		}

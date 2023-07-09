@@ -7,6 +7,7 @@ typedef struct food {
 typedef struct item {
 	int x, y, dx, dy;
 	enum dir cur_dir;
+	bool head;
 	struct item *prev, *next;
 } Item;
 
