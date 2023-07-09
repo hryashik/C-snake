@@ -5,13 +5,17 @@
 #include "types.h"
 #include "snake.h"
 #include <time.h>
+#include <string.h>
 
 enum { delay_duration = 100 };
 enum { key_escape = 27 };
 
 void show_score(int n) {
 	char message[] = "Score: ";
-	move(0, 10);
+	int length = strlen(message);
+	int row, col;
+	getmaxyx(stdscr, row, col);
+	move(0, (col/2) - length);
 	attrset(COLOR_PAIR(1) | A_BOLD);
 	addstr(message);
 	attrset(COLOR_PAIR(0));
@@ -61,7 +65,7 @@ void gen_food(Food *f, int max_x, int max_y) {
 		hide_food(f);
 	char sym = '@';
 	int x = rand() % (max_x - 2);
-	int y = rand() % (max_y - 2);
+	int y = rand() % (max_y - 3);
 	f->x = x + 1;
 	f->y = y + 2;
 	move(f->y, f->x);

@@ -76,6 +76,16 @@ void set_direction(Item *ptr, int key)
 	}
 }
 
+static bool check(Item *f, int x, int y)
+{
+	while(f) {	
+		if(f->x == x && f->y == y)
+			return false;
+		f = f->next;
+	}
+	return true;
+}
+
 void move_star(Item *ptr, bool *status, int max_x, int max_y)
 {
 	if(ptr) {
@@ -83,6 +93,10 @@ void move_star(Item *ptr, bool *status, int max_x, int max_y)
 		if(ptr->head) {
 			ptr->x += ptr->dx;
 			ptr->y += ptr->dy;
+			if(!check(ptr->next, ptr->x, ptr->y)) {
+				*status = false;
+				return;
+			}
 			if (ptr->x > (max_x - 2) || ptr->x < 1) {	
 				*status = false;
 				return;
