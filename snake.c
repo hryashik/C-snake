@@ -18,20 +18,18 @@ static void hide_star(Item *ptr)
 	addch(' ');
 	refresh();
 }
-
-void init_snake(Item *first)
+/*
+void init_snake(Item *first,int max_x, int max_y)
 {
-	int x, y;
-	getmaxyx(stdscr, y, x);
-	first->x = x/2;
-	first->y = y/2;
+	first->x = max_x/2
+	first->y = max_y/2;
 	first->dx = -1;
 	first->dy = 0;
 	first->prev = NULL;
 	first->next = NULL;
 	draw_star(first);
 }
-
+*/
 void set_direction(Item *ptr, int x, int y)
 {
 	ptr->dx = x;
@@ -43,6 +41,5 @@ void move_star(Item *ptr)
 	hide_star(ptr);
 	ptr->x += ptr->dx;
 	ptr->y += ptr->dy;
-	addstr("sd");
 	draw_star(ptr);
 }

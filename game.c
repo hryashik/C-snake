@@ -5,6 +5,7 @@
 #include "item-type.h"
 #include "snake.h"
 
+enum { delay_duration = 100 };
 enum { key_escape = 27 };
 
 void init_game()
@@ -18,23 +19,37 @@ void init_game()
 
 int main()
 {
+	int row, col, key;
 	Item *first = malloc(sizeof(Item));
-	char key;
 	initscr();
 	cbreak();
-	timeout(100);
+	timeout(delay_duration);
 	keypad(stdscr, 1);
-	init_snake(first);
 	noecho();
 	curs_set(0);
-	while((key = getch() != key_escape)) {
+	getmaxyx(stdscr, row, col);
+	first->x = col/2;
+	first->y = row/2;
+	set_direction(first, 0, 0);
+	while((key = getch()) != key_escape) {
 		switch(key) {
+			case KEY_UP:
+				set_direction(first, 0, -1);
+				break;
+			case KEY_DOWN:
+				set_direction(first, 0, 1);
+				break;
+			case KEY_LEFT:
+				set_direction(first, -1, 0);
+				break;
+			case KEY_RIGHT:
+				set_direction(first, 1, 0);
+				break;
 			case ERR:
 				move_star(first);
 				break;
 		}
 	}
-	refresh();
 	endwin();
 	return 0;
 }
