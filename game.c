@@ -105,6 +105,14 @@ static void add_item(Item *f, Item *l)
 	l->next = tmp;
 }
 
+void clear_mem(Item *node)
+{
+	if(node) {
+		clear_mem(node->next);
+		free(node);
+	}
+}
+
 int main()
 {
 	int row, col, key, score;
@@ -140,5 +148,7 @@ int main()
 	blink_snake(first);
 	sleep(5);
 	endwin();
+	clear_mem(first);
+	free(f);
 	return 0;
 }
